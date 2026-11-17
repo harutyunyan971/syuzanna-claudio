@@ -9,65 +9,125 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Pinyon+Script&family=Noto+Serif+Armenian:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--paper:#F5EFE4;--paper-2:#EDE4D3;--ink:#2B2721;--soft:#6A6255;--olive:#4A5638;--deep:#2F3825;--gold:#B48E52;--line:rgba(47,56,37,.18)}
+:root{--paper:#F5EFE4;--paper-2:#EDE4D3;--ink:#2B2721;--soft:#6A6255;--olive:#4A5638;--deep:#2F3825;--gold:#B48E52;--line:rgba(47,56,37,.18);--yes:#3f6b3a;--no:#9a4a3a;--wait:#a07a2c}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--paper-2);color:var(--ink);font-family:"Noto Serif Armenian","Cormorant Garamond",serif;font-variant-numeric:lining-nums;-webkit-font-smoothing:antialiased;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
-header{background:var(--deep);color:var(--paper);padding:34px 20px 30px;text-align:center}
+body{background:var(--paper-2);color:var(--ink);font-family:"Noto Serif Armenian","Cormorant Garamond",serif;font-variant-numeric:lining-nums;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom)}
+header{background:var(--deep);color:var(--paper);padding:calc(26px + env(safe-area-inset-top)) 20px 24px;text-align:center}
 header .s{font-family:"Pinyon Script",cursive;font-size:40px;color:#E3CBA4;line-height:1}
-header .t{font-size:13px;letter-spacing:.12em;margin-top:10px;opacity:.85}
-main{max-width:760px;margin:0 auto;padding:22px 16px 60px;display:grid;gap:18px}
-.card{background:var(--paper);border-radius:18px;padding:22px 20px;box-shadow:0 10px 30px -20px rgba(47,56,37,.4)}
-.card h2{font-weight:500;font-size:18px;color:var(--deep);margin-bottom:16px;display:flex;align-items:center;gap:10px}
-.card h2 .n{width:26px;height:26px;border-radius:50%;background:var(--deep);color:var(--paper);font-size:13px;display:inline-flex;align-items:center;justify-content:center}
+header .t{font-size:13px;letter-spacing:.12em;margin-top:8px;opacity:.85}
+main{max-width:760px;margin:0 auto;padding:18px 14px 60px;display:grid;gap:16px}
+.card{background:var(--paper);border-radius:18px;padding:20px 18px;box-shadow:0 10px 30px -20px rgba(47,56,37,.4)}
+.card h2{font-weight:500;font-size:18px;color:var(--deep);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.card h2 .sp{flex:1}
 label{display:block;font-size:13px;color:var(--gold);margin:14px 0 6px}
 .hint{font-size:12px;color:var(--soft);margin-top:6px;line-height:1.5}
-input[type=text],input[type=url]{width:100%;font:inherit;font-size:17px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);outline:none}
+input[type=text],input[type=url],input[type=password]{width:100%;font:inherit;font-size:17px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);outline:none}
 input:focus{border-color:var(--olive)}
 .seg{display:flex;gap:6px;flex-wrap:wrap}
 .seg input{position:absolute;opacity:0;pointer-events:none}
-.seg label{margin:0;color:var(--ink);font-size:14px;padding:10px 14px;border:1px solid var(--line);border-radius:30px;cursor:pointer;background:#fff;transition:all .25s}
+.seg label{margin:0;color:var(--ink);font-size:14px;padding:9px 14px;border:1px solid var(--line);border-radius:30px;cursor:pointer;background:#fff;transition:all .25s}
 .seg input:checked+label{background:var(--deep);color:var(--paper);border-color:var(--deep)}
-.seg input:focus-visible+label{outline:2px solid var(--gold)}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:560px){.row{grid-template-columns:1fr}}
-button,.b{font:inherit;font-size:14px;border:1px solid var(--deep);background:transparent;color:var(--deep);padding:11px 16px;border-radius:30px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
-button.primary{background:var(--deep);color:var(--paper);width:100%;justify-content:center;padding:15px;font-size:16px;margin-top:20px}
-button.sm,.b.sm{padding:7px 12px;font-size:13px}
-button.danger{border-color:#9a4a3a;color:#9a4a3a}
-.result{display:none;margin-top:18px;padding:16px;border-radius:14px;background:var(--paper-2);border:1px dashed var(--gold)}
+button,.b{font:inherit;font-size:14px;border:1px solid var(--deep);background:transparent;color:var(--deep);padding:10px 15px;border-radius:30px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+button:disabled{opacity:.5;cursor:default}
+button.primary{background:var(--deep);color:var(--paper);width:100%;justify-content:center;padding:15px;font-size:16px;margin-top:18px}
+button.sm,.b.sm{padding:6px 12px;font-size:13px}
+button.danger{border-color:var(--no);color:var(--no)}
+.result{display:none;margin-top:16px;padding:16px;border-radius:14px;background:var(--paper-2);border:1px dashed var(--gold)}
 .result.show{display:block}
 .prev{font-size:15px;color:var(--soft)}
 .prev b{font-family:"Pinyon Script","Noto Serif Armenian",cursive;font-weight:400;font-size:26px;color:var(--deep);display:block;margin-top:2px}
 .link{font-family:ui-monospace,Menlo,monospace;font-size:12px;word-break:break-all;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px;margin:12px 0;user-select:all}
 .acts{display:flex;gap:8px;flex-wrap:wrap}
-.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);background:var(--deep);color:var(--paper);padding:12px 20px;border-radius:30px;font-size:14px;opacity:0;transition:all .3s;pointer-events:none;z-index:9}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);background:var(--deep);color:var(--paper);padding:12px 20px;border-radius:30px;font-size:14px;opacity:0;transition:all .3s;pointer-events:none;z-index:9;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.stat b{display:block;font-family:"Cormorant Garamond",serif;font-weight:500;font-size:34px;line-height:1.1;color:var(--deep)}
+.stat span{font-size:12px;color:var(--soft)}
+.stat.yes b{color:var(--yes)}.stat.no b{color:var(--no)}.stat.wait b{color:var(--wait)}
+.upd{font-size:12px;color:var(--soft);margin-top:10px;text-align:right}
+/* lists */
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chips button{padding:6px 12px;font-size:13px;border-color:var(--line);background:#fff}
+.chips button.on{background:var(--deep);color:var(--paper);border-color:var(--deep)}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.tools input{flex:1;min-width:160px;font-size:14px;padding:9px 12px}
 .list{display:grid;gap:10px}
-.item{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+.item{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff}
+.item .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
 .item .nm{font-size:16px;color:var(--deep)}
 .item .meta{font-size:12px;color:var(--soft);margin-top:3px}
-.item .acts{justify-content:flex-end}
+.item .acts{margin-top:10px}
+.item .ans{margin-top:8px;font-size:14px;line-height:1.55;background:var(--paper);border-radius:10px;padding:8px 10px}
+.item .ans .q{font-style:italic;color:var(--soft)}
+.badge{font-size:12px;padding:4px 10px;border-radius:20px;white-space:nowrap;border:1px solid}
+.badge.yes{color:var(--yes);border-color:rgba(63,107,58,.35);background:rgba(63,107,58,.08)}
+.badge.no{color:var(--no);border-color:rgba(154,74,58,.35);background:rgba(154,74,58,.08)}
+.badge.wait{color:var(--wait);border-color:rgba(160,122,44,.35);background:rgba(160,122,44,.08)}
 .empty{color:var(--soft);font-size:14px;text-align:center;padding:16px}
-.tools{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-.tools input{max-width:240px;font-size:14px;padding:9px 12px}
-.count{font-size:13px;color:var(--soft)}
-@media(max-width:560px){.item{grid-template-columns:1fr}.item .acts{justify-content:flex-start}}
+.lock{max-width:420px;margin:40px auto}
+.err{color:var(--no);font-size:14px;margin-top:10px;min-height:1em}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .8s linear infinite;vertical-align:-2px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.hide{display:none!important}
 </style>
 </head>
 <body>
-<header><div class="s">Syuzanna &amp; Claudio</div><div class="t">Հրավերների ադմին էջ</div></header>
-<main>
+<header><div class="s">Syuzanna &amp; Claudio</div><div class="t">Հրավերներ և պատասխաններ</div></header>
+
+<!-- LOCK -->
+<main id="lockView" class="hide">
+  <section class="card lock">
+    <h2>Մուտք</h2>
+    <label for="keyIn">Ադմինի բանալին</label>
+    <input type="password" id="keyIn" autocomplete="current-password">
+    <button class="primary" id="keyBtn">Մուտք գործել</button>
+    <div class="err" id="keyErr"></div>
+  </section>
+</main>
+
+<!-- APP -->
+<main id="appView" class="hide">
 
 <section class="card">
-  <h2><span class="n">1</span>Նոր հրավեր</h2>
+  <h2>Ամփոփում <span class="sp"></span><button class="sm" id="refresh">Թարմացնել</button></h2>
+  <div class="stats">
+    <div class="stat yes"><b id="sGuests">–</b><span>հյուր կգա</span></div>
+    <div class="stat yes"><b id="sYes">–</b><span>«կգամ» պատասխան</span></div>
+    <div class="stat no"><b id="sNo">–</b><span>«չեմ գա» պատասխան</span></div>
+    <div class="stat wait"><b id="sWait">–</b><span>դեռ չեն պատասխանել</span></div>
+  </div>
+  <div class="upd" id="upd"></div>
+</section>
+
+<section class="card">
+  <h2>Պատասխաններ</h2>
+  <div class="chips" id="rChips">
+    <button data-f="all" class="on">Բոլորը</button><button data-f="yes">Կգան</button><button data-f="no">Չեն գա</button>
+  </div>
+  <div class="list" id="rList"></div>
+</section>
+
+<section class="card">
+  <h2>Հրավերներ</h2>
+  <div class="chips" id="iChips">
+    <button data-f="all" class="on">Բոլորը</button><button data-f="yes">Կգան</button><button data-f="no">Չեն գա</button><button data-f="wait">Չպատասխանած</button>
+  </div>
+  <div class="tools"><input type="text" id="q" placeholder="Որոնել անունով…"><button class="sm" id="exp">Պատճենել ցուցակը</button></div>
+  <div class="list" id="iList"></div>
+</section>
+
+<section class="card">
+  <h2>Նոր հրավեր</h2>
   <label for="nm">Ում է հրավերը (հայերեն տարբերակի համար)</label>
   <input type="text" id="nm" placeholder="օր.՝ Արամ և Անի" maxlength="80">
   <div class="hint">Հրավերը կբացվի «Սիրելի Արամ և Անի,» դիմելաձևով։</div>
-
   <label for="lt">Անունը լատինատառ՝ իտալերեն տարբերակի համար (ոչ պարտադիր)</label>
   <input type="text" id="lt" placeholder="օր.՝ Aram e Ani" maxlength="80">
-  <div class="hint">Եթե դատարկ թողնեք, իտալերենում էլ կերևա վերևի անունը։</div>
-
   <label>Իտալերեն դիմելաձևը</label>
   <div class="seg">
     <input type="radio" name="sal" id="s_p" value="p" checked><label for="s_p">Cari (զույգ / խումբ)</label>
@@ -75,129 +135,160 @@ button.danger{border-color:#9a4a3a;color:#9a4a3a}
     <input type="radio" name="sal" id="s_f" value="f"><label for="s_f">Cara (կին)</label>
     <input type="radio" name="sal" id="s_fp" value="fp"><label for="s_fp">Care (կանայք)</label>
   </div>
-
   <div class="row">
-    <div>
-      <label>Հրավերի լեզուն</label>
-      <div class="seg">
-        <input type="radio" name="lang" id="l_hy" value="hy" checked><label for="l_hy">Հայերեն</label>
-        <input type="radio" name="lang" id="l_it" value="it"><label for="l_it">Italiano</label>
-      </div>
-      <div class="hint">Հյուրը միշտ կարող է փոխել լեզուն էջում։</div>
-    </div>
-    <div>
-      <label>RSVP ֆորմայի տեսակը</label>
-      <div class="seg">
-        <input type="radio" name="form" id="f_g" value="g" checked><label for="f_g">Հյուրերի քանակով</label>
-        <input type="radio" name="form" id="f_c" value="c"><label for="f_c">Միայնակ / կողակցի հետ</label>
-      </div>
-    </div>
+    <div><label>Հրավերի լեզուն</label>
+      <div class="seg"><input type="radio" name="lang" id="l_hy" value="hy" checked><label for="l_hy">Հայերեն</label><input type="radio" name="lang" id="l_it" value="it"><label for="l_it">Italiano</label></div></div>
+    <div><label>RSVP ֆորմայի տեսակը</label>
+      <div class="seg"><input type="radio" name="form" id="f_g" value="g" checked><label for="f_g">Հյուրերի քանակով</label><input type="radio" name="form" id="f_c" value="c"><label for="f_c">Միայնակ / կողակցի հետ</label></div></div>
   </div>
-
   <button class="primary" id="make">Ստեղծել հղումը</button>
-
   <div class="result" id="result">
     <div class="prev">Հյուրը կտեսնի՝<b id="pv"></b></div>
     <div class="link" id="lnk"></div>
-    <div class="acts">
-      <button id="cp">Պատճենել հղումը</button>
-      <a class="b" id="wa" target="_blank" rel="noopener">Ուղարկել WhatsApp-ով</a>
-      <a class="b" id="op" target="_blank" rel="noopener">Բացել</a>
-    </div>
+    <div class="acts"><button id="cp">Պատճենել հղումը</button><a class="b" id="op" target="_blank" rel="noopener">Բացել</a></div>
   </div>
 </section>
 
 <section class="card">
-  <h2><span class="n">2</span>Ստեղծված հրավերներ</h2>
-  <div class="tools">
-    <input type="text" id="q" placeholder="Որոնել անունով…">
-    <div class="acts"><span class="count" id="cnt"></span><button class="sm" id="exp">Պատճենել ցուցակը (Sheets)</button></div>
-  </div>
-  <div class="list" id="list"></div>
-  <div class="hint" style="margin-top:12px">Ցուցակը պահվում է միայն այս բրաուզերում։ «Պատճենել ցուցակը»-ով կարող եք տեղադրել Google Sheets-ում։</div>
+  <h2>Կարգավորումներ</h2>
+  <label for="base">Հրավերի էջի հասցեն</label>
+  <input type="url" id="base">
+  <div class="hint">Անհատական հղումները կսկսվեն այս հասցեով։ Պահվում է ավտոմատ։</div>
+  <div class="acts" style="margin-top:16px"><a class="b sm" id="sheetLink" target="_blank" rel="noopener">Բացել Google Sheet-ը</a><button class="sm danger" id="logout">Դուրս գալ</button></div>
 </section>
-
-<section class="card">
-  <h2><span class="n">3</span>Կայքի հասցեն</h2>
-  <label for="base">Հրավերի էջի հասցեն, որին կավելանան անհատական հղումները</label>
-  <input type="url" id="base" placeholder="https://syuzanna-claudio.pages.dev/">
-  <div class="hint">Cloudflare-ում տեղադրելուց հետո գրեք այստեղ կայքի հասցեն (օր.՝ https://syuzanna-claudio.pages.dev/)։ Պահվում է ավտոմատ։</div>
-</section>
-
 </main>
 <div class="toast" id="toast"></div>
 
 <script>
-const ARTIFACT_URL="https://claude.ai/artifact/6VQb5snpM7Hyf6g9HWfyhZ";
+/* ===== CONFIG ===== */
+const API="https://script.google.com/macros/s/AKfycbyql_tOM9j2AEm2iHts6vrHGvDE82uRt1_TBDKMCabPRsS4Pkjw4z2KUAVU7nM6LMWf/exec";                      // Google Apps Script web-app URL
+const SITE="https://harutyunyan971.github.io/syuzanna-claudio/";
+/* ================== */
 const SAL={m:"Caro",f:"Cara",p:"Cari",fp:"Care"};
 const $=id=>document.getElementById(id);
-const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
-
-function defaultBase(){
-  if(/claude/i.test(location.hostname)||!/^https?:/.test(location.protocol))return ARTIFACT_URL;
-  return new URL("./",location.href).href;
-}
-$("base").value=store.get("sc-base",defaultBase());
-$("base").addEventListener("change",()=>{store.set("sc-base",$("base").value.trim());render()});
-
-const hex=s=>[...new TextEncoder().encode(s)].map(b=>b.toString(16).padStart(2,"0")).join("");
-function linkFor(inv){
-  let base=($("base").value.trim()||defaultBase()).replace(/#.*$/,"");
-  if(/\/index\.html$/.test(base))base=base.replace(/index\.html$/,"");
-  return base+"#inv-"+hex(JSON.stringify([inv.form,inv.lang,inv.sal,inv.name,inv.latin]));
-}
-const greetOf=inv=>inv.lang==="hy"?`Սիրելի ${inv.name},`:`${SAL[inv.sal]} ${inv.latin||inv.name},`;
-const val=n=>document.querySelector(`[name=${n}]:checked`).value;
-function toast(t){const e=$("toast");e.textContent=t;e.classList.add("show");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("show"),1800)}
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function toast(t){const e=$("toast");e.textContent=t;e.classList.add("show");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("show"),2000)}
 async function copy(text,msg){try{await navigator.clipboard.writeText(text);toast(msg||"Պատճենված է")}catch(e){
   const ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();
-  try{document.execCommand("copy");toast(msg||"Պատճենված է")}catch(_){toast("Պատճենել չստացվեց — նշեք և պատճենեք ձեռքով")}ta.remove()}}
-const waText=inv=>`${greetOf(inv)}\n${inv.lang==="hy"?"Սիրով հրավիրում ենք Ձեզ մեր հարսանիքին 💍":"Abbiamo il piacere di invitarvi al nostro matrimonio 💍"}\n${linkFor(inv)}`;
+  try{document.execCommand("copy");toast(msg||"Պատճենված է")}catch(_){toast("Չստացվեց պատճենել, նշեք ձեռքով")}ta.remove()}}
 
-let list=store.get("sc-invites",[]);
-let current=null;
-$("make").addEventListener("click",()=>{
-  const name=$("nm").value.trim();
-  if(!name){$("nm").focus();toast("Գրեք հյուրի անունը");return}
-  const inv={id:Date.now().toString(36),name,latin:$("lt").value.trim(),sal:val("sal"),lang:val("lang"),form:val("form"),at:new Date().toISOString()};
-  list.unshift(inv);store.set("sc-invites",list);current=inv;showResult(inv);render();
-  $("nm").value="";$("lt").value="";
-});
-function showResult(inv){
-  const url=linkFor(inv);
-  $("pv").textContent=greetOf(inv);$("lnk").textContent=url;
-  $("op").href=url;$("wa").href="https://wa.me/?text="+encodeURIComponent(waText(inv));
-  $("result").classList.add("show");
+/* ---- links ---- */
+function defaultBase(){return /github\.io$|pages\.dev$/.test(location.hostname)?new URL("./",location.href).href:SITE}
+$("base").value=store.get("sc-base2",defaultBase());
+$("base").addEventListener("change",()=>{store.set("sc-base2",$("base").value.trim());render()});
+const hex=s=>[...new TextEncoder().encode(s)].map(b=>b.toString(16).padStart(2,"0")).join("");
+function linkFor(i){let base=($("base").value.trim()||defaultBase()).replace(/#.*$/,"").replace(/index\.html$/,"");
+  return base+"#inv-"+hex(JSON.stringify([i.form,i.lang,i.sal,i.name,i.latin||"",i.id]))}
+const greetOf=i=>i.lang==="hy"?`Սիրելի ${i.name},`:`${SAL[i.sal]||"Cari"} ${i.latin||i.name},`;
+const val=n=>document.querySelector(`[name=${n}]:checked`).value;
+
+/* ---- api ---- */
+let KEY=store.get("sc-key","");
+async function api(params){
+  const u=new URL(API);u.searchParams.set("key",KEY);for(const[k,v]of Object.entries(params||{}))u.searchParams.set(k,v);
+  const r=await fetch(u.toString(),{redirect:"follow"});const j=await r.json();
+  if(!j.ok)throw new Error(j.error||"error");return j;
 }
-$("cp").addEventListener("click",()=>current&&copy(linkFor(current),"Հղումը պատճենված է"));
 
-const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+/* ---- state ---- */
+let invites=[],rsvps=[],sheetUrl="",iF="all",rF="all";
+const lastBy=()=>{const m={};rsvps.forEach(r=>{if(r.inviteId)m[r.inviteId]=r});return m};
+const isYes=r=>String(r.attending)==="yes";
+function apply(j){invites=j.invites||[];rsvps=(j.rsvps||[]).sort((a,b)=>String(a.ts).localeCompare(String(b.ts)));sheetUrl=j.sheet||"";
+  if(sheetUrl)$("sheetLink").href=sheetUrl;$("upd").textContent="Թարմացվել է՝ "+new Date().toLocaleTimeString("hy-AM",{hour:"2-digit",minute:"2-digit"});render()}
+async function load(){
+  $("refresh").disabled=true;$("refresh").innerHTML='<span class="spin"></span>';
+  try{apply(await api({action:"list"}))}catch(e){if(e.message==="auth"){logout("Բանալին սխալ է")}else toast("Չհաջողվեց բեռնել, ստուգեք ինտերնետը")}
+  finally{$("refresh").disabled=false;$("refresh").textContent="Թարմացնել"}
+}
+
+/* ---- render ---- */
+function ansText(r){
+  if(!isYes(r))return `<span class="badge no">Չի գա</span>`;
+  const n=Number(r.guests)||1;return `<span class="badge yes">Կգա · ${n} հոգի</span>`;
+}
+function ansDetails(r){
+  const parts=[];
+  parts.push(`<b>${esc(r.name)}</b>`);
+  if(isYes(r)){if(r.guestNames)parts.push(`Հետը՝ ${esc(r.guestNames)}`);if(r.partner)parts.push(`Կողակից՝ ${esc(r.partner)}`);
+    if(!r.guestNames&&!r.partner&&String(r.form)==="c")parts.push("Միայնակ")}
+  if(r.message)parts.push(`<span class="q">«${esc(r.message)}»</span>`);
+  return parts.join("<br>");
+}
+const fmt=ts=>{const d=new Date(ts);return isNaN(d)?"":d.toLocaleDateString("hy-AM",{day:"numeric",month:"short"})+" "+d.toLocaleTimeString("hy-AM",{hour:"2-digit",minute:"2-digit"})};
 function render(){
+  const lb=lastBy();
+  // stats: count latest answer per invite + answers without invite
+  const latest=[...Object.values(lb),...rsvps.filter(r=>!r.inviteId)];
+  const yes=latest.filter(isYes),no=latest.filter(r=>!isYes(r));
+  $("sGuests").textContent=yes.reduce((s,r)=>s+(Number(r.guests)||1),0);
+  $("sYes").textContent=yes.length;$("sNo").textContent=no.length;
+  $("sWait").textContent=invites.filter(i=>!lb[i.id]).length;
+  // responses (latest per invite, newest first)
+  const rs=latest.filter(r=>rF==="all"||(rF==="yes")===isYes(r)).sort((a,b)=>String(b.ts).localeCompare(String(a.ts)));
+  $("rList").innerHTML=rs.length?rs.map(r=>`<div class="item"><div class="top"><div><div class="nm">${esc(r.invite||r.name)}</div>
+    <div class="meta">${fmt(r.ts)}${r.invite?"":" · ընդհանուր հղումից"} · ${r.lang==="it"?"IT":"ՀԱՅ"}</div></div>${ansText(r)}</div>
+    <div class="ans">${ansDetails(r)}</div></div>`).join(""):`<div class="empty">${rsvps.length?"Այս ֆիլտրով պատասխան չկա":"Դեռ պատասխաններ չկան"}</div>`;
+  // invites
   const q=$("q").value.trim().toLowerCase();
-  const items=list.filter(i=>!q||(i.name+" "+i.latin).toLowerCase().includes(q));
-  $("cnt").textContent=`${list.length} հրավեր`;
-  $("list").innerHTML=items.length?items.map(i=>`<div class="item" data-id="${i.id}">
-    <div><div class="nm">${esc(i.name)}${i.latin?` <span style="color:var(--soft);font-size:13px">· ${esc(i.latin)}</span>`:""}</div>
-    <div class="meta">${i.lang==="hy"?"Հայերեն":"Italiano"} · ${i.form==="c"?"Միայնակ / կողակցի հետ":"Հյուրերի քանակով"} · ${SAL[i.sal]} · ${new Date(i.at).toLocaleDateString("hy-AM")}</div></div>
-    <div class="acts"><button class="sm" data-a="copy">Պատճենել</button><a class="b sm" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(waText(i))}">WhatsApp</a><a class="b sm" target="_blank" rel="noopener" href="${esc(linkFor(i))}">Բացել</a><button class="sm danger" data-a="del" aria-label="Ջնջել">✕</button></div>
-  </div>`).join(""):`<div class="empty">${list.length?"Ոչինչ չի գտնվել":"Դեռ հրավերներ չկան"}</div>`;
+  const items=invites.slice().reverse().filter(i=>{const r=lb[i.id];const st=!r?"wait":isYes(r)?"yes":"no";
+    return (iF==="all"||iF===st)&&(!q||(i.name+" "+(i.latin||"")).toLowerCase().includes(q))});
+  $("iList").innerHTML=items.length?items.map(i=>{const r=lb[i.id];
+    const badge=!r?`<span class="badge wait">Պատասխան չկա</span>`:ansText(r);
+    return `<div class="item" data-id="${esc(i.id)}"><div class="top"><div><div class="nm">${esc(i.name)}${i.latin?` <span style="color:var(--soft);font-size:13px">· ${esc(i.latin)}</span>`:""}</div>
+    <div class="meta">${i.lang==="it"?"Italiano":"Հայերեն"} · ${i.form==="c"?"Միայնակ / կողակցի հետ":"Հյուրերի քանակով"} · ${SAL[i.sal]||""}</div></div>${badge}</div>
+    ${r?`<div class="ans">${ansDetails(r)}</div>`:""}
+    <div class="acts"><button class="sm" data-a="copy">Պատճենել հղումը</button><a class="b sm" target="_blank" rel="noopener" href="${esc(linkFor(i))}">Բացել</a><button class="sm danger" data-a="del">Ջնջել</button></div></div>`}).join("")
+    :`<div class="empty">${invites.length?"Ոչինչ չի գտնվել":"Դեռ հրավերներ չկան"}</div>`;
 }
-$("list").addEventListener("click",e=>{
-  const b=e.target.closest("button");if(!b)return;
-  const id=b.closest(".item").dataset.id,inv=list.find(i=>i.id===id);if(!inv)return;
+document.querySelectorAll(".chips").forEach(c=>c.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  c.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));if(c.id==="iChips")iF=b.dataset.f;else rF=b.dataset.f;render()}));
+$("q").addEventListener("input",render);
+$("refresh").addEventListener("click",load);
+
+/* ---- create ---- */
+let current=null;
+$("make").addEventListener("click",async()=>{
+  const name=$("nm").value.trim();if(!name){$("nm").focus();toast("Գրեք հյուրի անունը");return}
+  const inv={id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),name,latin:$("lt").value.trim(),sal:val("sal"),lang:val("lang"),form:val("form"),at:new Date().toISOString()};
+  const btn=$("make");btn.disabled=true;btn.innerHTML='<span class="spin"></span>';
+  try{apply(await api({action:"addInvite",data:JSON.stringify(inv)}));current=inv;
+    $("pv").textContent=greetOf(inv);$("lnk").textContent=linkFor(inv);$("op").href=linkFor(inv);$("result").classList.add("show");
+    $("nm").value="";$("lt").value="";toast("Հրավերը պահված է")}
+  catch(e){toast("Չհաջողվեց պահել, փորձեք նորից")}
+  finally{btn.disabled=false;btn.textContent="Ստեղծել հղումը"}
+});
+$("cp").addEventListener("click",()=>current&&copy(linkFor(current),"Հղումը պատճենված է"));
+$("iList").addEventListener("click",async e=>{
+  const b=e.target.closest("button");if(!b)return;const id=b.closest(".item").dataset.id,inv=invites.find(i=>String(i.id)===id);if(!inv)return;
   if(b.dataset.a==="copy")copy(linkFor(inv),"Հղումը պատճենված է");
   if(b.dataset.a==="del"){
-    if(b.dataset.confirm){list=list.filter(i=>i.id!==id);store.set("sc-invites",list);render();toast("Ջնջված է")}
-    else{b.dataset.confirm="1";b.textContent="Ջնջե՞լ";setTimeout(()=>{if(b.isConnected){delete b.dataset.confirm;b.textContent="✕"}},2500)}
+    if(!b.dataset.confirm){b.dataset.confirm="1";b.textContent="Հաստա՞տ ջնջել";setTimeout(()=>{if(b.isConnected){delete b.dataset.confirm;b.textContent="Ջնջել"}},3000);return}
+    b.disabled=true;try{apply(await api({action:"delInvite",id}));toast("Ջնջված է")}catch(err){toast("Չհաջողվեց ջնջել")}
   }
 });
-$("q").addEventListener("input",render);
-$("exp").addEventListener("click",()=>{
-  const rows=[["Անուն","Լատինատառ","Լեզու","Ֆորմա","Դիմելաձև","Հղում","Ստեղծվել է"]].concat(
-    list.map(i=>[i.name,i.latin,i.lang,i.form==="c"?"կողակից":"քանակ",SAL[i.sal],linkFor(i),i.at.slice(0,10)]));
-  copy(rows.map(r=>r.map(c=>String(c).replace(/\t|\n/g," ")).join("\t")).join("\n"),"Ցուցակը պատճենված է՝ տեղադրեք Sheets-ում");
-});
-render();
+$("exp").addEventListener("click",()=>{const lb=lastBy();
+  const rows=[["Հրավեր","Լատինատառ","Պատասխան","Հյուրեր","Անուններ","Ուղերձ","Հղում"]].concat(invites.map(i=>{const r=lb[i.id];
+    return [i.name,i.latin||"",!r?"չկա":isYes(r)?"կգա":"չի գա",r&&isYes(r)?r.guests:"",r?[r.name,r.guestNames,r.partner].filter(Boolean).join(", "):"",r?r.message||"":"",linkFor(i)]}));
+  copy(rows.map(r=>r.map(c=>String(c??"").replace(/\t|\n/g," ")).join("\t")).join("\n"),"Պատճենված է՝ տեղադրեք Google Sheets-ում")});
+
+/* ---- auth ---- */
+async function tryKey(k){KEY=k;$("keyErr").textContent="";$("keyBtn").disabled=true;$("keyBtn").innerHTML='<span class="spin"></span>';
+  try{const j=await api({action:"list"});store.set("sc-key",k);showApp();apply(j);await migrateLocal()}
+  catch(e){$("keyErr").textContent=e.message==="auth"?"Բանալին սխալ է":"Կապ չկա սերվերի հետ, փորձեք նորից"}
+  finally{$("keyBtn").disabled=false;$("keyBtn").textContent="Մուտք գործել"}}
+async function migrateLocal(){ // invites created earlier in this browser (before the server existed)
+  const old=store.get("sc-invites",[]);if(!old.length)return;
+  try{apply(await api({action:"addInvite",data:JSON.stringify(old)}));store.del("sc-invites");toast(`${old.length} հին հրավեր տեղափոխվեց`)}catch(e){}
+}
+function showApp(){$("lockView").classList.add("hide");$("appView").classList.remove("hide")}
+function logout(msg){store.del("sc-key");KEY="";$("appView").classList.add("hide");$("lockView").classList.remove("hide");$("keyErr").textContent=msg||""}
+$("keyBtn").addEventListener("click",()=>{const k=$("keyIn").value.trim();if(k)tryKey(k)});
+$("keyIn").addEventListener("keydown",e=>{if(e.key==="Enter")$("keyBtn").click()});
+$("logout").addEventListener("click",()=>logout());
+if(KEY){showApp();load()}else{$("lockView").classList.remove("hide")}
+setInterval(()=>{if(KEY&&!document.hidden)load()},60000);
 </script>
 </body>
 </html>

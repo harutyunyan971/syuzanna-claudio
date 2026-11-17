@@ -442,13 +442,12 @@ footer{background:#171C12;color:rgba(245,239,228,.45);text-align:center;font-fam
         <div class="sub xn hide" id="partnerSub"><label for="fPartner" data-i18n="partnerName"></label><input id="fPartner" autocomplete="off"></div>
       </div>
       <div class="field"><label for="fMsg" data-i18n="fMsg"></label><textarea id="fMsg" name="message" rows="2"></textarea></div>
-      <button class="btn solid" type="submit"><span data-i18n="send"></span></button>
+      <button class="btn solid" type="submit" id="sendBtn"><span data-i18n="send"></span></button>
       <div class="form-msg" id="formMsg"></div>
     </form>
     <div class="thanks" id="thanks">
       <svg class="heart" viewBox="0 0 70 70"><path d="M35 58 C10 40 6 26 14 18 C21 11 31 14 35 22 C39 14 49 11 56 18 C64 26 60 40 35 58Z" fill="none" stroke="#B48E52" stroke-width="1.4"/></svg>
       <p class="lead" id="thanksText"></p>
-      <a class="btn" id="waLink" target="_blank" rel="noopener" style="display:none"><span data-i18n="waSend"></span></a>
     </div>
   </div>
 </section>
@@ -471,8 +470,7 @@ const CONFIG = {
   date: "2027-05-23",          // wedding date, YYYY-MM-DD
   time: "17:45",
   tz: "+02:00",                // Italy: +02:00 in summer, +01:00 in winter
-  whatsapp: "",                // couple's number for RSVPs, digits only, e.g. "393331234567"
-  rsvpEndpoint: "",            // optional: Google Apps Script web-app URL to collect RSVPs in a Sheet
+  rsvpEndpoint: "https://script.google.com/macros/s/AKfycbyql_tOM9j2AEm2iHts6vrHGvDE82uRt1_TBDKMCabPRsS4Pkjw4z2KUAVU7nM6LMWf/exec", // Google Apps Script web-app URL (RSVPs go to the Google Sheet / admin page)
   musicSrc: ""                 // optional: path to an MP3 (e.g. "music.mp3"); empty = built-in music box
 };
 /* ====================================================== */
@@ -523,7 +521,7 @@ let INV=null;
 try{
   const hx=(location.hash.match(/^#inv-([0-9a-f]+)$/i)||[])[1]||new URLSearchParams(location.search).get("i");
   if(hx){const a=JSON.parse(new TextDecoder().decode(new Uint8Array(hx.match(/../g).map(h=>parseInt(h,16)))));
-    INV={form:a[0]==="c"?"c":"g",lang:a[1]==="it"?"it":"hy",sal:a[2]||"p",name:String(a[3]||"").slice(0,80),latin:String(a[4]||"").slice(0,80)}}
+    INV={form:a[0]==="c"?"c":"g",lang:a[1]==="it"?"it":"hy",sal:a[2]||"p",name:String(a[3]||"").slice(0,80),latin:String(a[4]||"").slice(0,80),id:String(a[5]||"").slice(0,40)}}
 }catch(e){INV=null}
 const FORM=INV?INV.form:"g";
 document.getElementById("footYear").textContent=Y;
@@ -638,25 +636,14 @@ form.addEventListener("submit",async e=>{
   if(xNames.some(n=>!n)){msg.textContent=T[lang].needGuests;msg.classList.add("err");extra.querySelector("input:placeholder-shown,input")&&[...extra.querySelectorAll("input")].find(i=>!i.value.trim()).focus();return}
   if(withPartner&&!partnerName){msg.textContent=T[lang].needPartner;msg.classList.add("err");fPartner.focus();return}
   const total=FORM==="c"?(withPartner?2:1):guests;
-  const showThanks=(text,waUrl)=>{form.style.display="none";thanksText.textContent=text;thanks.classList.add("show");
-    if(waUrl){waLink.href=waUrl;waLink.style.display="inline-flex"}burst(40)};
-  if(CONFIG.rsvpEndpoint){
-    msg.textContent=T[lang].sending;
-    try{const fd=new URLSearchParams({name,attending:attend?"yes":"no",guests:attend?total:0,guestNames:xNames.join(", "),partner:partnerName,invite:INV?INV.name:"",form:FORM,message,lang,ts:new Date().toISOString()});
-      await fetch(CONFIG.rsvpEndpoint,{method:"POST",mode:"no-cors",body:fd});showThanks(T[lang].thanksSent)}
-    catch(err){msg.textContent=T[lang].netErr;msg.classList.add("err")}
-    return;
-  }
-  const t=T[lang];
-  const lines=["Syuzanna & Claudio — RSVP"];
-  if(INV&&INV.name)lines.push(`${t.waInvite}: ${INV.name}`);
-  lines.push(name,attend?t.waYes:t.waNo);
-  if(attend){lines.push(`${t.waGuests}: ${total}`);xNames.forEach((n,i)=>lines.push(`${i+2}. ${n}`));if(partnerName)lines.push(`${t.waPartner}: ${partnerName}`)}
-  if(message)lines.push(`${t.waMsg}: ${message}`);
-  const text=lines.join("\n");
-  const url=`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(text)}`;
-  showThanks(t.thanksWa,url);
-  try{window.open(url,"_blank","noopener")}catch(err){}
+  const showThanks=text=>{form.style.display="none";thanksText.textContent=text;thanks.classList.add("show");burst(40);
+    try{localStorage.setItem("sc-rsvp-"+(INV&&INV.id||"x"),"1")}catch(e){}};
+  if(!CONFIG.rsvpEndpoint){msg.textContent=T[lang].netErr;msg.classList.add("err");return}
+  msg.textContent=T[lang].sending;sendBtn.disabled=true;
+  try{const fd=new URLSearchParams({inviteId:INV&&INV.id||"",invite:INV?INV.name:"",name,attending:attend?"yes":"no",guests:attend?total:0,
+      guestNames:xNames.join(", "),partner:partnerName,form:FORM,message,lang});
+    await fetch(CONFIG.rsvpEndpoint,{method:"POST",mode:"no-cors",body:fd});showThanks(T[lang].thanksSent)}
+  catch(err){msg.textContent=T[lang].netErr;msg.classList.add("err");sendBtn.disabled=false}
 });
 
 /* ---------- music: generative music box (Web Audio) ---------- */
