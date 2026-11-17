@@ -162,7 +162,7 @@ button.danger{border-color:var(--no);color:var(--no)}
 <script>
 /* ===== CONFIG ===== */
 const API="https://script.google.com/macros/s/AKfycbyql_tOM9j2AEm2iHts6vrHGvDE82uRt1_TBDKMCabPRsS4Pkjw4z2KUAVU7nM6LMWf/exec";                      // Google Apps Script web-app URL
-const SITE="https://harutyunyan971.github.io/syuzanna-claudio/";
+const SITE="https://syu-cla.day/";
 /* ================== */
 const SAL={m:"Caro",f:"Cara",p:"Cari",fp:"Care"};
 const $=id=>document.getElementById(id);
@@ -174,9 +174,9 @@ async function copy(text,msg){try{await navigator.clipboard.writeText(text);toas
   try{document.execCommand("copy");toast(msg||"Պատճենված է")}catch(_){toast("Չստացվեց պատճենել, նշեք ձեռքով")}ta.remove()}}
 
 /* ---- links ---- */
-function defaultBase(){return /github\.io$|pages\.dev$/.test(location.hostname)?new URL("./",location.href).href:SITE}
-$("base").value=store.get("sc-base2",defaultBase());
-$("base").addEventListener("change",()=>{store.set("sc-base2",$("base").value.trim());render()});
+function defaultBase(){return SITE}
+$("base").value=store.get("sc-base3",defaultBase());
+$("base").addEventListener("change",()=>{store.set("sc-base3",$("base").value.trim());render()});
 const hex=s=>[...new TextEncoder().encode(s)].map(b=>b.toString(16).padStart(2,"0")).join("");
 function linkFor(i){let base=($("base").value.trim()||defaultBase()).replace(/#.*$/,"").replace(/index\.html$/,"");
   return base+"#inv-"+hex(JSON.stringify([i.form,i.lang,i.sal,i.name,i.latin||"",i.id]))}
